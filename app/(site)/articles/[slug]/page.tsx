@@ -1,4 +1,5 @@
 import type {ComponentProps} from 'react'
+import type {Metadata} from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import {notFound} from 'next/navigation'
@@ -17,6 +18,16 @@ type Article = {
   body: ComponentProps<typeof PortableText>['value'] | null
 }
 
+type ArticleMeta = {
+  title: string
+  subtitle: string
+  seoTitle: string | null
+  seoDescription: string | null
+  publishedAt: string | null
+  authorName: string | null
+  coverImage: SanityImageSource | null
+}
+
 const ARTICLE_QUERY = `*[_type == "article" && slug.current == $slug && status == "published"][0] {
   title,
   subtitle,
@@ -26,6 +37,53 @@ const ARTICLE_QUERY = `*[_type == "article" && slug.current == $slug && status =
   coverImage,
   body
 }`
+
+const META_QUERY = `*[_type == "article" && slug.current == $slug && status == "published"][0] {
+  title,
+  subtitle,
+  seoTitle,
+  seoDescription,
+  publishedAt,
+  "authorName": author->name,
+  coverImage
+}`
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{slug: string}>
+}): Promise<Metadata> {
+  const {slug} = await params
+  const article = await client.fetch<ArticleMeta | null>(META_QUERY, {slug})
+
+  if (!article) return {title: 'Article not found'}
+
+  const title = article.seoTitle || article.title
+  const description = article.seoDescription || article.subtitle
+  const image = article.coverImage
+    ? urlFor(article.coverImage).width(1200).height(630).url()
+    : undefined
+
+  return {
+    title,
+    description,
+    alternates: {canonical: `/articles/${slug}`},
+    openGraph: {
+      title,
+      description,
+      type: 'article',
+      publishedTime: article.publishedAt ?? undefined,
+      authors: article.authorName ? [article.authorName] : undefined,
+      images: image ? [{url: image, width: 1200, height: 630}] : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: image ? [image] : undefined,
+    },
+  }
+}
 
 const components: PortableTextComponents = {
   block: {
