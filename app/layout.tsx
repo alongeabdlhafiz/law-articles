@@ -15,13 +15,13 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://law-articles.vercel.app"),
   title: {
-    default: "LawJournal",
-    template: "%s | LawJournal",
+    default: "Femi Falana Chambers, Faculty of Law, OOU Legal Publications",
+    template: "%s | Femi Falana Chambers",
   },
   description:
-    "An online publication where law students and legal writers share articles, opinions and educational content.",
+    "Articles, opinions and educational content from law students and legal writers.",
   openGraph: {
-    siteName: "LawJournal",
+    siteName: "Femi Falana Chambers, Faculty of Law, OOU Legal Publications",
     type: "website",
   },
 };
