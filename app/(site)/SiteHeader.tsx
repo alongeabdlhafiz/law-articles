@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import {useState} from 'react'
+import Image from 'next/image'
 
 const links = [
   {href: '/', label: 'Home'},
@@ -18,12 +19,25 @@ export default function SiteHeader() {
     <header className="border-b-4 border-gold bg-navy text-white">
       <div className="mx-auto max-w-5xl px-4 py-4 sm:px-6 sm:py-5">
         <div className="flex items-center justify-between gap-4">
-          <Link href="/" onClick={() => setOpen(false)} className="leading-tight">
-            <span className="block text-lg font-bold tracking-wide sm:text-xl">
-              Femi Falana Chambers
-            </span>
-            <span className="block text-xs text-gold sm:text-sm">
-              Faculty of Law, OOU · Legal Publications
+                    <Link
+            href="/"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-3 leading-tight"
+          >
+            <Image
+              src="/logo.png"
+              alt="Femi Falana Chambers logo"
+              width={44}
+              height={44}
+              className="h-10 w-10 shrink-0 rounded-full sm:h-11 sm:w-11"
+            />
+            <span>
+              <span className="block text-lg font-bold tracking-wide sm:text-xl">
+                Femi Falana Chambers
+              </span>
+              <span className="block text-xs text-gold sm:text-sm">
+                Faculty of Law, OOU · Legal Publications
+              </span>
             </span>
           </Link>
 
