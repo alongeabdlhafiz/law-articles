@@ -7,9 +7,11 @@ import Image from 'next/image'
 const links = [
   {href: '/', label: 'Home'},
   {href: '/categories', label: 'Categories'},
+  {href: '/community', label: 'Community'},
   {href: '/about', label: 'About'},
     {href: '/executive', label: 'Executive'},
   {href: '/contact', label: 'Contact'},
+  {href: '/login', label: 'Author Login'},
 ]
 
 export default function SiteHeader() {
